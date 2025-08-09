@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:places/providers/places.dart';
-import 'package:places/providers/selected_image.dart';
-import 'package:places/widgets/input_image.dart';
-import 'package:places/widgets/input_location.dart';
+import 'package:places/features/view_model/curr_location_view_model.dart';
+import 'package:places/features/view_model/places_view_model.dart';
+import 'package:places/core/providers/selected_image_provider.dart';
+import 'package:places/features/view/widgets/input_image_widget.dart';
+import 'package:places/features/view/widgets/input_location_widget.dart';
 
 class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
@@ -43,10 +44,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     });
 
     ref
-        .read(placesProvider.notifier)
+        .watch(placesViewModel.notifier)
         .savePlace(
           title: _titleController.text,
-          image: ref.read(selectedImageProvider)!,
+          image: ref.watch(selectedImageProvider)!,
+          locationInfo: ref.watch(currLocationViewModel),
         );
     Navigator.pop(context);
   }

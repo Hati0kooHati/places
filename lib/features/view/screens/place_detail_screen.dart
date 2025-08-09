@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:places/models/place.dart';
+import 'package:places/features/models/place.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
   final Place place;
@@ -13,7 +15,7 @@ class PlaceDetailScreen extends StatelessWidget {
       body: Stack(
         children: [
           Image.file(
-            place.image,
+            File(place.imagePath),
             fit: BoxFit.cover,
             height: double.infinity,
             width: double.infinity,

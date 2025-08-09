@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:places/providers/selected_image.dart';
+import 'package:places/core/providers/selected_image_provider.dart';
 
 class InputImageWidget extends ConsumerStatefulWidget {
   const InputImageWidget({super.key});

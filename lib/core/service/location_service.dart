@@ -33,7 +33,7 @@ class LocationService {
     return locationData;
   }
 
-  Future<LocationInfo?> getLocationAddress({
+  Future<LocationInfo?> searchByLatLng({
     required double latitude,
     required double longitude,
   }) async {
@@ -49,7 +49,11 @@ class LocationService {
       return null;
     }
 
-    final data = jsonDecode(response.body);
+    final data = jsonDecode(response.body) as Map;
+
+    if (data.isEmpty) {
+      return null;
+    }
 
     final LocationInfo locationInfo = LocationInfo(
       latitude: latitude,
@@ -60,7 +64,7 @@ class LocationService {
     return locationInfo;
   }
 
-  Future<LocationInfo?> search({required String address}) async {
+  Future<LocationInfo?> searchByAddress({required String address}) async {
     final url = Uri.parse(
       "https://nominatim.openstreetmap.org/search?q=$address&format=json&polygon_kml=1&addressdetails=0",
     );
@@ -73,9 +77,12 @@ class LocationService {
     if (response.statusCode == 404) {
       return null;
     }
-    print(response.body);
 
-    final data = jsonDecode(response.body);
+    final data = jsonDecode(response.body) as List;
+
+    if (data.isEmpty) {
+      return null;
+    }
 
     final Map result = data[0];
 

@@ -15,7 +15,7 @@ class PlacesRepository {
     return placesList;
   }
 
-  void savePlace(Place newPlace) async {
+  void addPlace(Place newPlace) async {
     final db = await LocalDatabase.db;
 
     await db.insert("user_places", {

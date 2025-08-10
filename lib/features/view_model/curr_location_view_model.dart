@@ -24,11 +24,10 @@ class CurrLocationViewModelNotifier extends AutoDisposeNotifier<LocationInfo> {
       return null;
     }
 
-    final LocationInfo? locationInfo = await _locationService
-        .getLocationAddress(
-          latitude: currLocation.latitude!,
-          longitude: currLocation.longitude!,
-        );
+    final LocationInfo? locationInfo = await _locationService.searchByLatLng(
+      latitude: currLocation.latitude!,
+      longitude: currLocation.longitude!,
+    );
 
     if (locationInfo == null) {
       return null;
@@ -39,8 +38,8 @@ class CurrLocationViewModelNotifier extends AutoDisposeNotifier<LocationInfo> {
     return locationInfo;
   }
 
-  Future<LocationInfo?> search({required String address}) async {
-    final LocationInfo? locationInfo = await _locationService.search(
+  Future<LocationInfo?> searchByAddress({required String address}) async {
+    final LocationInfo? locationInfo = await _locationService.searchByAddress(
       address: address,
     );
 
@@ -50,6 +49,27 @@ class CurrLocationViewModelNotifier extends AutoDisposeNotifier<LocationInfo> {
 
     state = locationInfo;
     return locationInfo;
+  }
+
+  Future<LocationInfo?> searchByLatLng({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final LocationInfo? locationInfo = await _locationService.searchByLatLng(
+      latitude: latitude,
+      longitude: longitude,
+    );
+
+    if (locationInfo == null) {
+      return null;
+    }
+
+    state = locationInfo;
+    return locationInfo;
+  }
+
+  void clearAddress() {
+    state = state.copyWith(address: "");
   }
 }
 

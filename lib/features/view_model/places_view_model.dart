@@ -6,6 +6,7 @@ import 'package:places/features/models/place.dart';
 
 import 'package:places/core/repository/places_repository.dart';
 import 'package:places/core/service/image_service.dart';
+import 'package:places/features/view/screens/add_place_screen.dart';
 
 class PlacesViewModelNotifier extends AsyncNotifier<List<Place>> {
   late final PlacesRepository _placesRepo;
@@ -19,7 +20,7 @@ class PlacesViewModelNotifier extends AsyncNotifier<List<Place>> {
     return await _placesRepo.loadPlaces();
   }
 
-  void savePlace({
+  void addPlace({
     required String title,
     required File image,
     required LocationInfo locationInfo,
@@ -33,7 +34,7 @@ class PlacesViewModelNotifier extends AsyncNotifier<List<Place>> {
         locationInfo: locationInfo,
       );
 
-      _placesRepo.savePlace(newPlace);
+      _placesRepo.addPlace(newPlace);
 
       return [newPlace, ...state.value!];
     });

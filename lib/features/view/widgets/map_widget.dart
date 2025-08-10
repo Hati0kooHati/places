@@ -8,16 +8,31 @@ class MapWidget extends StatelessWidget {
   final MapController mapController;
   final bool isLoading;
 
+  final void Function({required double latitude, required double longitude})
+  searchByLatLng;
+
   const MapWidget({
     super.key,
     required this.locationInfo,
     required this.mapController,
     required this.isLoading,
+    required this.searchByLatLng,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    try {
+      if (!isLoading) {
+        mapController.move(
+          LatLng(locationInfo.latitude, locationInfo.longitude),
+          mapController.camera.zoom,
+        );
+      }
+    } catch (e) {
+      null;
+    }
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -27,11 +42,12 @@ class MapWidget extends StatelessWidget {
         child: Stack(
           children: [
             FlutterMap(
-              key: ValueKey(
-                "${locationInfo.longitude}-${locationInfo.latitude}",
-              ),
               mapController: mapController,
               options: MapOptions(
+                onTap: (tapPosition, point) => searchByLatLng(
+                  latitude: point.latitude,
+                  longitude: point.longitude,
+                ),
                 initialCenter: LatLng(
                   locationInfo.latitude,
                   locationInfo.longitude,

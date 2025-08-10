@@ -16,4 +16,16 @@ class LocationInfo {
       address: map["address"],
     );
   }
+
+  LocationInfo copyWith({
+    double? latitude,
+    double? longitude,
+    String? address,
+  }) {
+    return LocationInfo(
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      address: address ?? this.address,
+    );
+  }
 }

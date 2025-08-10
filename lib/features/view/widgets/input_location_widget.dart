@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:places/features/models/location_info.dart';
 import 'package:places/features/view/widgets/input_address_widget.dart';
 import 'package:places/features/view/widgets/map_widget.dart';
@@ -42,7 +41,7 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
     });
   }
 
-  void search() async {
+  void searchByAddress() async {
     if (_addressEditingController.text.trim().isEmpty) {
       return;
     }
@@ -53,7 +52,7 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
 
     final result = await ref
         .watch(currLocationViewModel.notifier)
-        .search(address: _addressEditingController.text);
+        .searchByAddress(address: _addressEditingController.text);
 
     if (result == null && mounted) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -63,6 +62,33 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
     }
 
     setState(() {
+      isLoading = false;
+    });
+  }
+
+  void searchByLatLng({
+    required double latitude,
+    required double longitude,
+  }) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final result = await ref
+        .watch(currLocationViewModel.notifier)
+        .searchByLatLng(latitude: latitude, longitude: longitude);
+
+    if (result == null && mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to search location")),
+      );
+      return;
+    }
+
+    setState(() {
+      _addressEditingController.text =
+          result?.address ?? _addressEditingController.text;
       isLoading = false;
     });
   }
@@ -92,47 +118,47 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
     final LocationInfo locationInfo = ref.watch(currLocationViewModel);
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InputAddressWidget(
-              addressEditingController: _addressEditingController,
-              search: search,
-              getCurrentLocation: getCurrentLocation,
-            ),
-            const SizedBox(height: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InputAddressWidget(
+            addressEditingController: _addressEditingController,
+            search: searchByAddress,
+            getCurrentLocation: getCurrentLocation,
+            isLoading: isLoading,
+          ),
 
-            MapWidget(
-              locationInfo: locationInfo,
-              mapController: _mapController,
-              isLoading: isLoading,
-            ),
+          const SizedBox(height: 24),
 
-            const SizedBox(height: 16),
+          MapWidget(
+            locationInfo: locationInfo,
+            mapController: _mapController,
+            isLoading: isLoading,
+            searchByLatLng: searchByLatLng,
+          ),
 
-            AnimatedOpacity(
-              opacity: locationInfo.address.isNotEmpty ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  locationInfo.address.isNotEmpty
-                      ? 'Current: ${locationInfo.address}'
-                      : '',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+          const SizedBox(height: 16),
+
+          AnimatedOpacity(
+            opacity: locationInfo.address.isNotEmpty ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                locationInfo.address.isNotEmpty
+                    ? 'Current: ${locationInfo.address}'
+                    : '',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

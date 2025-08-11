@@ -17,22 +17,25 @@ class InputAddressWidget extends ConsumerWidget {
     required this.isLoading,
   });
 
+  void addressFieldOnChanged({
+    required bool isAddressError,
+    required WidgetRef ref,
+  }) {
+    if (isAddressError) {
+      ref.watch(isAddressErrorProvider.notifier).state = false;
+    }
+  }
+
+  void clearAddress({required WidgetRef ref}) {
+    ref.watch(currLocationViewModel.notifier).clearAddress();
+    addressEditingController.text = "";
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     final bool isAddressError = ref.watch(isAddressErrorProvider);
-
-    void addressFieldOnChanged() {
-      if (isAddressError) {
-        ref.watch(isAddressErrorProvider.notifier).state = false;
-      }
-    }
-
-    void clearAddress() {
-      ref.watch(currLocationViewModel.notifier).clearAddress();
-      addressEditingController.text = "";
-    }
 
     return Material(
       elevation: 4,
@@ -40,14 +43,15 @@ class InputAddressWidget extends ConsumerWidget {
       borderRadius: BorderRadius.circular(16),
       child: TextField(
         controller: addressEditingController,
-        onChanged: (_) => addressFieldOnChanged(),
+        onChanged: (_) =>
+            addressFieldOnChanged(isAddressError: isAddressError, ref: ref),
         decoration: InputDecoration(
           hintText: 'Enter address (e.g., Kyrgyzstan, Chuy, Ala-Archa)',
           hintStyle: TextStyle(
             color: theme.colorScheme.onSurface.withAlpha(128),
           ),
           prefixIcon: IconButton(
-            onPressed: clearAddress,
+            onPressed: () => clearAddress(ref: ref),
             icon: Icon(Icons.close),
             color: theme.colorScheme.primary,
           ),

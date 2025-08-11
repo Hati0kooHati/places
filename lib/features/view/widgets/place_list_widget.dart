@@ -1,20 +1,28 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:places/features/models/place.dart';
+import 'package:places/features/view/widgets/place_card_widget.dart';
 import 'package:places/features/view_model/places_view_model.dart';
 import 'package:places/features/view/screens/place_detail_screen.dart';
 
 class PlacesListdWidget extends ConsumerWidget {
   const PlacesListdWidget({super.key});
 
+  void tryAgain(WidgetRef ref) {
+    ref.watch(placesViewModel.notifier).tryLoadPlacesAgain();
+  }
+
+  void navigateToPlaceDetails({
+    required BuildContext context,
+    required Place place,
+  }) {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => PlaceDetailScreen(place: place)));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void tryAgain() {
-      ref.watch(placesViewModel.notifier).tryLoadPlacesAgain();
-    }
-
     return ref
         .watch(placesViewModel)
         .when(
@@ -25,17 +33,9 @@ class PlacesListdWidget extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final Place place = data[index];
 
-                return InkWell(
-                  onTap: () => PlaceDetailScreen(place: place),
-                  child: ListTile(
-                    minTileHeight: 80,
-                    leading: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: FileImage(File(place.imagePath)),
-                    ),
-
-                    title: Text(place.title, style: TextStyle(fontSize: 20)),
-                  ),
+                return PlaceCardWidget(
+                  place: place,
+                  navigateToPlaceDetails: navigateToPlaceDetails,
                 );
               },
             );
@@ -56,7 +56,7 @@ class PlacesListdWidget extends ConsumerWidget {
                 const SizedBox(height: 10),
 
                 ElevatedButton(
-                  onPressed: tryAgain,
+                  onPressed: () => tryAgain(ref),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,

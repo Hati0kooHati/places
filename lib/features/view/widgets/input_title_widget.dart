@@ -7,15 +7,18 @@ class InputTitleWidget extends ConsumerWidget {
 
   const InputTitleWidget({super.key, required this.titleController});
 
+  void titleFieldOnChanged({
+    required bool isTitleError,
+    required WidgetRef ref,
+  }) {
+    if (isTitleError) {
+      ref.watch(isTitleErrorProvider.notifier).state = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isTitleError = ref.watch(isTitleErrorProvider);
-
-    void titleFieldOnChanged() {
-      if (isTitleError) {
-        ref.watch(isTitleErrorProvider.notifier).state = false;
-      }
-    }
 
     return Container(
       decoration: BoxDecoration(
@@ -48,7 +51,8 @@ class InputTitleWidget extends ConsumerWidget {
           fontWeight: FontWeight.w500,
         ),
 
-        onChanged: (_) => titleFieldOnChanged(),
+        onChanged: (_) =>
+            titleFieldOnChanged(isTitleError: isTitleError, ref: ref),
         decoration: InputDecoration(
           label: const Text("Title"),
           labelStyle: TextStyle(

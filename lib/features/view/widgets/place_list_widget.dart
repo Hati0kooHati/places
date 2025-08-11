@@ -6,27 +6,15 @@ import 'package:places/features/models/place.dart';
 import 'package:places/features/view_model/places_view_model.dart';
 import 'package:places/features/view/screens/place_detail_screen.dart';
 
-class PlacesListdWidget extends ConsumerStatefulWidget {
+class PlacesListdWidget extends ConsumerWidget {
   const PlacesListdWidget({super.key});
 
-  ConsumerState<PlacesListdWidget> createState() => _PlacesListState();
-}
-
-class _PlacesListState extends ConsumerState<PlacesListdWidget> {
-  void onListTileTap({required Place place, required BuildContext context}) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => PlaceDetailScreen(place: place)),
-    );
-  }
-
   @override
-  void initState() {
-    super.initState();
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    void tryAgain() {
+      ref.watch(placesViewModel.notifier).tryLoadPlacesAgain();
+    }
 
-  @override
-  Widget build(BuildContext context) {
     return ref
         .watch(placesViewModel)
         .when(
@@ -38,7 +26,7 @@ class _PlacesListState extends ConsumerState<PlacesListdWidget> {
                 final Place place = data[index];
 
                 return InkWell(
-                  onTap: () => onListTileTap(place: place, context: context),
+                  onTap: () => PlaceDetailScreen(place: place),
                   child: ListTile(
                     minTileHeight: 80,
                     leading: CircleAvatar(
@@ -52,7 +40,43 @@ class _PlacesListState extends ConsumerState<PlacesListdWidget> {
               },
             );
           },
-          error: (e, stack) => Center(child: Text("$e, $stack")),
+          error: (e, stack) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Failed to load places",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                ElevatedButton(
+                  onPressed: tryAgain,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  child: const Text('Try Again'),
+                ),
+              ],
+            ),
+          ),
           loading: () => Center(child: CircularProgressIndicator()),
         );
   }

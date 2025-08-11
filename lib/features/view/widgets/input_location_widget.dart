@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:places/core/providers/is_address_error_provider.dart';
 import 'package:places/features/models/location_info.dart';
 import 'package:places/features/view/widgets/input_address_widget.dart';
 import 'package:places/features/view/widgets/map_widget.dart';
@@ -22,6 +23,7 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
   void getCurrentLocation() async {
     setState(() {
       isLoading = true;
+      ref.watch(isAddressErrorProvider.notifier).state = false;
     });
 
     final result = await ref

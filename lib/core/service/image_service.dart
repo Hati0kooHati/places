@@ -17,13 +17,17 @@ class ImageService {
     return copiedImage.path;
   }
 
-  Future<XFile?> pickImage(ImageSource imageSource) async {
+  Future<File?> pickImage(ImageSource imageSource) async {
     final pickedImage = await _imagePicker.pickImage(
       source: imageSource,
       maxWidth: 600,
     );
 
-    return pickedImage;
+    if (pickedImage == null) {
+      return null;
+    }
+
+    return File(pickedImage.path);
   }
 }
 

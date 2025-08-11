@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:places/core/data/local_database.dart';
 import 'package:places/features/models/place.dart';
 
-class PlacesRepository {
+class PlacesService {
   Future<List<Place>> loadPlaces() async {
     final db = await LocalDatabase.db;
 
@@ -29,4 +29,4 @@ class PlacesRepository {
   }
 }
 
-final placesReposotoryProvider = Provider((ref) => PlacesRepository());
+final placesServiceProvider = Provider((ref) => PlacesService());

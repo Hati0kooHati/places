@@ -19,10 +19,7 @@ class _InputImageWidgetState extends ConsumerState<InputImageWidget> {
         .watch(currImageViewModel.notifier)
         .pickImage(imageSource);
 
-    if (pickedImage == null && mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Failed to pick image")));
+    if (pickedImage == null) {
       return;
     }
 

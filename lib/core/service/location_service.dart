@@ -96,4 +96,6 @@ class LocationService {
   }
 }
 
-final locationProvider = Provider<LocationService>((ref) => LocationService());
+final locationServiceProvider = Provider<LocationService>(
+  (ref) => LocationService(),
+);

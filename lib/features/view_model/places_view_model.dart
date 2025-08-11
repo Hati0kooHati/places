@@ -1,43 +1,42 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:places/core/repository/app_repository.dart';
 import 'package:places/features/models/location_info.dart';
 import 'package:places/features/models/place.dart';
 
-import 'package:places/core/repository/places_repository.dart';
-import 'package:places/core/service/image_service.dart';
-import 'package:places/features/view/screens/add_place_screen.dart';
-
 class PlacesViewModelNotifier extends AsyncNotifier<List<Place>> {
-  late final PlacesRepository _placesRepo;
-  late final ImageService _imageService;
+  late final AppRepository _appRepository;
 
   @override
   build() async {
-    _placesRepo = ref.watch(placesReposotoryProvider);
-    _imageService = ref.watch(imageServiceProvider);
+    _appRepository = ref.watch(appRepositoryProvider);
 
-    return await _placesRepo.loadPlaces();
+    return await _appRepository.loadPlaces();
   }
 
-  void addPlace({
+  Future<Place?> addPlace({
     required String title,
     required File image,
     required LocationInfo locationInfo,
   }) async {
-    state = await AsyncValue.guard(() async {
-      final String copiedImagePath = await _imageService.saveImage(image);
+    final Place? newPlace = await _appRepository.addPlace(
+      title: title,
+      image: image,
+      locationInfo: locationInfo,
+    );
 
-      final Place newPlace = Place(
-        title: title,
-        imagePath: copiedImagePath,
-        locationInfo: locationInfo,
-      );
+    if (newPlace == null) {
+      return null;
+    }
 
-      _placesRepo.addPlace(newPlace);
+    state = AsyncData([newPlace, ...state.value!]);
+    return newPlace;
+  }
 
-      return [newPlace, ...state.value!];
-    });
+  void tryLoadPlacesAgain() async {
+    state = AsyncLoading();
+    state = await AsyncValue.guard(() => _appRepository.loadPlaces());
   }
 }
 

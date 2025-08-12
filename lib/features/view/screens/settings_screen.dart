@@ -6,6 +6,12 @@ import 'package:places/core/providers/theme_mode_provider.dart';
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
+  void setThemeMode(ThemeMode? newThemeMode, WidgetRef ref) {
+    if (newThemeMode != null) {
+      ref.read(themeModeProvider.notifier).setThemeMode(newThemeMode);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -43,7 +49,6 @@ class SettingsScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Text(
                 'Personalize Your Experience',
                 style: GoogleFonts.caveat(
@@ -62,7 +67,6 @@ class SettingsScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
 
-              // Theme Selection Card
               Card(
                 elevation: 4,
                 shadowColor: Colors.black.withAlpha(40),
@@ -118,13 +122,8 @@ class SettingsScreen extends ConsumerWidget {
                               ),
                             );
                           }).toList(),
-                          onChanged: (newThemeMode) {
-                            if (newThemeMode != null) {
-                              ref
-                                  .read(themeModeProvider.notifier)
-                                  .setThemeMode(newThemeMode);
-                            }
-                          },
+                          onChanged: (newThemeMode) =>
+                              setThemeMode(newThemeMode, ref),
                           dropdownColor: theme.colorScheme.surfaceContainer,
                           borderRadius: BorderRadius.circular(12),
                         ),

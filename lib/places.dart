@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:places/core/providers/theme_data_provider.dart';
+import 'package:places/core/providers/theme_mode_provider.dart';
 import 'package:places/features/view/screens/places_screen.dart';
 
 class Places extends ConsumerWidget {
@@ -8,11 +8,13 @@ class Places extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeDataModeProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp(
+      theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
-      theme: theme,
+      themeMode: themeMode,
       title: 'Great Places',
       home: PlacesScreen(),
     );

@@ -69,6 +69,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Place", style: GoogleFonts.caveat(fontSize: 30)),
+        centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
         elevation: 2,

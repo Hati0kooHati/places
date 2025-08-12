@@ -9,11 +9,7 @@ class CurrLocationViewModelNotifier extends AutoDisposeNotifier<LocationInfo> {
   build() {
     _appRepository = ref.watch(appRepositoryProvider);
 
-    return LocationInfo(
-      latitude: 42.543099,
-      longitude: 74.4791903,
-      address: "",
-    );
+    return LocationInfo(latitude: 0, longitude: 0, address: "");
   }
 
   Future<LocationInfo?> getCurrentLocation() async {

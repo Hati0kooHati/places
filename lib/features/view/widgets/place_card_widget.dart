@@ -54,7 +54,7 @@ class PlaceCardWidget extends StatelessWidget {
             ),
             minVerticalPadding: 12,
             leading: Hero(
-              tag: 'place_image_${place.imagePath}',
+              tag: place.id,
               child: CircleAvatar(
                 radius: 32,
                 backgroundImage: FileImage(File(place.imagePath)),

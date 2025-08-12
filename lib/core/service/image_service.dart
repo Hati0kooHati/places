@@ -18,10 +18,7 @@ class ImageService {
   }
 
   Future<File?> pickImage(ImageSource imageSource) async {
-    final pickedImage = await _imagePicker.pickImage(
-      source: imageSource,
-      maxWidth: 600,
-    );
+    final pickedImage = await _imagePicker.pickImage(source: imageSource);
 
     if (pickedImage == null) {
       return null;

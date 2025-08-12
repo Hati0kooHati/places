@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:places/core/providers/is_address_error_provider.dart';
 import 'package:places/core/providers/is_image_error_provider.dart';
 import 'package:places/core/providers/is_title_error_provider.dart';
@@ -63,8 +64,16 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Place")),
+      appBar: AppBar(
+        title: Text("Add Place", style: GoogleFonts.caveat(fontSize: 30)),
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
+        elevation: 2,
+        shadowColor: Colors.black.withAlpha(50),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:places/features/view/screens/add_place_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:places/features/view/screens/settings_screen.dart';
 import 'package:places/features/view/widgets/place_list_widget.dart';
 
 class PlacesScreen extends StatelessWidget {
   const PlacesScreen({super.key});
+
+  void navigateToSettingsScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +27,7 @@ class PlacesScreen extends StatelessWidget {
         shadowColor: Colors.black.withAlpha(50),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddPlaceScreen()),
-              );
-            },
+            onPressed: () => navigateToSettingsScreen(context),
             icon: Icon(Icons.settings, size: 28),
             color: theme.colorScheme.onPrimary,
             tooltip: 'Settings',

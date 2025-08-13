@@ -27,6 +27,14 @@ class PlacesListWidget extends ConsumerWidget {
         .watch(placesViewModel)
         .when(
           data: (data) {
+            if (data.isEmpty) {
+              return Center(
+                child: Text(
+                  "No places found...",
+                  style: TextStyle(color: Theme.of(context).canvasColor),
+                ),
+              );
+            }
             return ListView.builder(
               itemCount: data.length,
 

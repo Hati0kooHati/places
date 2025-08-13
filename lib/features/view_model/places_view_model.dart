@@ -31,6 +31,8 @@ class PlacesViewModelNotifier extends AsyncNotifier<List<Place>> {
     }
 
     state = AsyncData([newPlace, ...state.value!]);
+    print(newPlace);
+    print("above is placesViewModel");
     return newPlace;
   }
 

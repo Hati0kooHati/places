@@ -11,7 +11,7 @@ class ImageService {
   Future<String> saveImage(File image) async {
     final appDocDir = await syspath.getApplicationDocumentsDirectory();
     final copiedImage = await image.copy(
-      "${DateTime.now()}${appDocDir.path}/${path.basename(image.path)}",
+      "${appDocDir.path}/${path.basename(image.path)}${DateTime.now()}",
     );
 
     return copiedImage.path;

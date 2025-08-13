@@ -5,18 +5,19 @@ import 'package:places/features/models/location_info.dart';
 
 class MapWidget extends StatefulWidget {
   final LocationInfo locationInfo;
-  final MapController mapController;
   final bool isLoading;
+  final double height;
+  final MapController? mapController;
 
-  final void Function({required double latitude, required double longitude})
-  searchByLatLng;
+  final void Function(TapPosition tapPosition, LatLng point)? searchByLatLng;
 
   const MapWidget({
     super.key,
     required this.locationInfo,
-    required this.mapController,
     required this.isLoading,
-    required this.searchByLatLng,
+    required this.height,
+    this.searchByLatLng,
+    this.mapController,
   });
 
   @override
@@ -25,10 +26,12 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   void moveMap() {
-    widget.mapController.move(
-      LatLng(widget.locationInfo.latitude, widget.locationInfo.longitude),
-      widget.mapController.camera.zoom,
-    );
+    if (widget.mapController != null) {
+      widget.mapController!.move(
+        LatLng(widget.locationInfo.latitude, widget.locationInfo.longitude),
+        widget.mapController!.camera.zoom,
+      );
+    }
   }
 
   @override
@@ -48,17 +51,14 @@ class _MapWidgetState extends State<MapWidget> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: SizedBox(
-        height: 450,
+        height: widget.height,
         width: double.infinity,
         child: Stack(
           children: [
             FlutterMap(
               mapController: widget.mapController,
               options: MapOptions(
-                onTap: (tapPosition, point) => widget.searchByLatLng(
-                  latitude: point.latitude,
-                  longitude: point.longitude,
-                ),
+                onTap: widget.searchByLatLng,
                 initialCenter: LatLng(
                   widget.locationInfo.latitude,
                   widget.locationInfo.longitude,

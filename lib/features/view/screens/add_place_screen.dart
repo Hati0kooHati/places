@@ -61,6 +61,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
         );
 
     if (result == null && mounted) {
+      print(result);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Failed to add place...")));

@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:places/features/models/place.dart';
 import 'package:places/features/view/screens/full_photo_screen.dart';
+import 'package:places/features/view/widgets/map_widget.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
   final Place place;
@@ -112,68 +110,12 @@ class PlaceDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
 
-                    // Map Preview
-                    Card(
-                      elevation: 4,
-                      shadowColor: theme.colorScheme.shadow.withAlpha(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: SizedBox(
-                          height: 200,
-                          width: double.infinity,
-                          child: FlutterMap(
-                            options: MapOptions(
-                              initialCenter: LatLng(
-                                place.locationInfo.latitude,
-                                place.locationInfo.longitude,
-                              ),
-                              initialZoom: 12,
-                            ),
-                            children: [
-                              TileLayer(
-                                urlTemplate:
-                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                userAgentPackageName: 'com.example.app',
-                              ),
-                              MarkerLayer(
-                                markers: [
-                                  Marker(
-                                    point: LatLng(
-                                      place.locationInfo.latitude,
-                                      place.locationInfo.longitude,
-                                    ),
-                                    child: Icon(
-                                      Icons.location_pin,
-                                      color: theme.colorScheme.primary,
-                                      size: 40,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    MapWidget(
+                      locationInfo: place.locationInfo,
+                      isLoading: false,
+                      height: 300,
                     ),
                     const SizedBox(height: 24),
-
-                    // Text(
-                    //   'Details',
-                    //   style: theme.textTheme.titleLarge?.copyWith(
-                    //     fontWeight: FontWeight.bold,
-                    //     color: theme.colorScheme.primary,
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 8),
-                    // Text(
-                    //   'Add more details about this place here.',
-                    //   style: theme.textTheme.bodyLarge?.copyWith(
-                    //     color: theme.colorScheme.onSurfaceVariant,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

@@ -32,6 +32,7 @@ class AppRepository {
     required LocationInfo locationInfo,
   }) async {
     try {
+      print("errow with image");
       final String copiedImagePath = await _imageService.saveImage(image);
 
       final Place newPlace = Place(

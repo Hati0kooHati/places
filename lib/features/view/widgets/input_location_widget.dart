@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:places/core/providers/is_address_error_provider.dart';
 import 'package:places/features/models/location_info.dart';
 import 'package:places/features/view/widgets/input_address_widget.dart';
@@ -68,17 +69,14 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
     });
   }
 
-  void searchByLatLng({
-    required double latitude,
-    required double longitude,
-  }) async {
+  void searchByLatLng(TapPosition tapPosition, LatLng point) async {
     setState(() {
       isLoading = true;
     });
 
     final result = await ref
         .watch(currLocationViewModel.notifier)
-        .searchByLatLng(latitude: latitude, longitude: longitude);
+        .searchByLatLng(latitude: point.latitude, longitude: point.longitude);
 
     if (result == null && mounted) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -137,6 +135,7 @@ class _InputLocationWidgetState extends ConsumerState<InputLocationWidget> {
             mapController: _mapController,
             isLoading: isLoading,
             searchByLatLng: searchByLatLng,
+            height: 450,
           ),
 
           const SizedBox(height: 16),

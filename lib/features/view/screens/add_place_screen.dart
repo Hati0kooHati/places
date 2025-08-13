@@ -33,33 +33,40 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     _titleController.dispose();
   }
 
-  void addPlace() {
+  void addPlace() async {
     if (_titleController.text.trim().isEmpty ||
-        ref.watch(currImageViewModel) == null ||
-        ref.watch(currLocationViewModel).address == "") {
+        ref.read(currImageViewModel) == null ||
+        ref.read(currLocationViewModel).address == "") {
       if (_titleController.text.trim().isEmpty) {
-        ref.watch(isTitleErrorProvider.notifier).state = true;
+        ref.read(isTitleErrorProvider.notifier).state = true;
       }
 
-      if (ref.watch(currImageViewModel) == null) {
-        ref.watch(isImageErrorProvider.notifier).state = true;
+      if (ref.read(currImageViewModel) == null) {
+        ref.read(isImageErrorProvider.notifier).state = true;
       }
 
-      if (ref.watch(currLocationViewModel).address == "") {
-        ref.watch(isAddressErrorProvider.notifier).state = true;
+      if (ref.read(currLocationViewModel).address == "") {
+        ref.read(isAddressErrorProvider.notifier).state = true;
       }
 
       return;
     }
 
-    ref
-        .watch(placesViewModel.notifier)
+    final result = await ref
+        .read(placesViewModel.notifier)
         .addPlace(
           title: _titleController.text,
-          image: ref.watch(currImageViewModel)!,
-          locationInfo: ref.watch(currLocationViewModel),
+          image: ref.read(currImageViewModel)!,
+          locationInfo: ref.read(currLocationViewModel),
         );
-    Navigator.pop(context);
+
+    if (result == null && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Failed to add place...")));
+    } else if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   @override

@@ -20,7 +20,7 @@ class Place {
   factory Place.fromMap(Map map) {
     return Place(
       id: map["id"],
-      title: map["tilte"],
+      title: map["title"],
       imagePath: map["imagePath"],
       locationInfo: map["locationInfo"],
     );

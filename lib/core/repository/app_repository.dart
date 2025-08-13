@@ -19,7 +19,11 @@ class AppRepository {
   PlacesService get _placesService => ref.watch(placesServiceProvider);
 
   Future<File?> pickImage(ImageSource imageSource) async {
-    return await _imageService.pickImage(imageSource);
+    try {
+      return await _imageService.pickImage(imageSource);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<Place?> addPlace({

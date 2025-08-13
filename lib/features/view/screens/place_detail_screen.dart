@@ -51,7 +51,7 @@ class PlaceDetailScreen extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     Hero(
-                      tag: place.id,
+                      tag: "place-${place.id}",
                       child: Image.file(
                         File(place.imagePath),
                         fit: BoxFit.cover,

@@ -29,4 +29,15 @@ class Place {
       ),
     );
   }
+
+  Map<String, Object?> toMap() {
+    return {
+      "id": id,
+      "title": title,
+      "imagePath": imagePath,
+      "longitude": locationInfo.longitude,
+      "latitude": locationInfo.latitude,
+      "address": locationInfo.address,
+    };
+  }
 }

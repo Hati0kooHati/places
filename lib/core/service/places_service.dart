@@ -17,14 +17,7 @@ class PlacesService {
   void addPlace(Place newPlace) async {
     final db = await LocalDatabase.db;
 
-    await db.insert("user_places", {
-      "id": newPlace.id,
-      "title": newPlace.title,
-      "imagePath": newPlace.imagePath,
-      "longitude": newPlace.locationInfo.longitude,
-      "latitude": newPlace.locationInfo.latitude,
-      "address": newPlace.locationInfo.address,
-    });
+    await db.insert("user_places", newPlace.toMap());
   }
 }
 

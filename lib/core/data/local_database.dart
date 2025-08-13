@@ -15,8 +15,6 @@ class LocalDatabase {
 
     final dbPath = await sql.getDatabasesPath();
 
-    sql.deleteDatabase(join(dbPath, "places.db"));
-
     _db = await sql.openDatabase(
       join(dbPath, "places.db"),
       onCreate: (db, version) {

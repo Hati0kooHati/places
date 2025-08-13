@@ -4,7 +4,7 @@ import 'package:places/features/models/place.dart';
 
 class PlacesService {
   Future<List<Place>> loadPlaces() async {
-    final db = await LocalDatabase.db;
+    final db = LocalDatabase.db;
     final userPlaces = await db.query("user_places");
 
     final List<Place> placesList = userPlaces
@@ -15,7 +15,7 @@ class PlacesService {
   }
 
   void addPlace(Place newPlace) async {
-    final db = await LocalDatabase.db;
+    final db = LocalDatabase.db;
 
     await db.insert("user_places", newPlace.toMap());
   }

@@ -6,13 +6,13 @@ import 'package:sqflite/sqflite.dart' as sql;
 class LocalDatabase {
   const LocalDatabase._();
 
-  static sql.Database? _db;
+  static late final sql.Database _db;
 
-  static Future<sql.Database> get db async {
-    if (_db != null) {
-      return _db!;
-    }
+  static sql.Database get db {
+    return _db;
+  }
 
+  static Future<void> init() async {
     final dbPath = await sql.getDatabasesPath();
 
     _db = await sql.openDatabase(
@@ -24,6 +24,5 @@ class LocalDatabase {
       },
       version: 1,
     );
-    return _db!;
   }
 }

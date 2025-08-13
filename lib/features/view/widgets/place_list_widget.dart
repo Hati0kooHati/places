@@ -5,8 +5,8 @@ import 'package:places/features/view/widgets/place_card_widget.dart';
 import 'package:places/features/view_model/places_view_model.dart';
 import 'package:places/features/view/screens/place_detail_screen.dart';
 
-class PlacesListdWidget extends ConsumerWidget {
-  const PlacesListdWidget({super.key});
+class PlacesListWidget extends ConsumerWidget {
+  const PlacesListWidget({super.key});
 
   void tryAgain(WidgetRef ref) {
     ref.watch(placesViewModel.notifier).tryLoadPlacesAgain();
@@ -34,6 +34,7 @@ class PlacesListdWidget extends ConsumerWidget {
                 final Place place = data[index];
 
                 return PlaceCardWidget(
+                  key: ValueKey(place.id),
                   place: place,
                   navigateToPlaceDetails: navigateToPlaceDetails,
                 );

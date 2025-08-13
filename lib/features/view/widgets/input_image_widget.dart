@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:places/core/providers/is_image_error_provider.dart';
+import 'package:places/core/providers/form_error_state.dart';
 import 'package:places/features/view_model/curr_image_view_model.dart';
 
 class InputImageWidget extends ConsumerStatefulWidget {
@@ -23,14 +23,17 @@ class _InputImageWidgetState extends ConsumerState<InputImageWidget> {
       return;
     }
 
-    ref.watch(isImageErrorProvider.notifier).state = false;
+    ref.read(formErrorStateProvider.notifier).state = ref
+        .read(formErrorStateProvider.notifier)
+        .state
+        .copyWith(isImageError: false);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final bool isImageError = ref.watch(isImageErrorProvider);
+    final bool isImageError = ref.watch(formErrorStateProvider).isImageError;
 
     final File? currImage = ref.watch(currImageViewModel);
 

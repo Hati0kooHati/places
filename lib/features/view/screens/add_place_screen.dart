@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:places/core/providers/is_address_error_provider.dart';
-import 'package:places/core/providers/is_image_error_provider.dart';
-import 'package:places/core/providers/is_title_error_provider.dart';
+import 'package:places/core/providers/form_error_state.dart';
 import 'package:places/features/view/widgets/input_title_widget.dart';
 import 'package:places/features/view_model/curr_image_view_model.dart';
 import 'package:places/features/view_model/curr_location_view_model.dart';
@@ -38,15 +36,24 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
         ref.read(currImageViewModel) == null ||
         ref.read(currLocationViewModel).address == "") {
       if (_titleController.text.trim().isEmpty) {
-        ref.read(isTitleErrorProvider.notifier).state = true;
+        ref.read(formErrorStateProvider.notifier).state = ref
+            .read(formErrorStateProvider.notifier)
+            .state
+            .copyWith(isTitleError: true);
       }
 
       if (ref.read(currImageViewModel) == null) {
-        ref.read(isImageErrorProvider.notifier).state = true;
+        ref.read(formErrorStateProvider.notifier).state = ref
+            .read(formErrorStateProvider.notifier)
+            .state
+            .copyWith(isImageError: true);
       }
 
       if (ref.read(currLocationViewModel).address == "") {
-        ref.read(isAddressErrorProvider.notifier).state = true;
+        ref.read(formErrorStateProvider.notifier).state = ref
+            .read(formErrorStateProvider.notifier)
+            .state
+            .copyWith(isAddressError: true);
       }
 
       return;
@@ -61,7 +68,6 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
         );
 
     if (result == null && mounted) {
-      print(result);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Failed to add place...")));

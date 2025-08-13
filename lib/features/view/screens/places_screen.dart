@@ -35,7 +35,7 @@ class PlacesScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: PlacesListdWidget(),
+      body: PlacesListWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

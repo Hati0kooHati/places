@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:places/core/providers/is_address_error_provider.dart';
+import 'package:places/core/providers/form_error_state.dart';
 import 'package:places/features/view_model/curr_location_view_model.dart';
 
 class InputAddressWidget extends ConsumerWidget {
@@ -22,7 +22,10 @@ class InputAddressWidget extends ConsumerWidget {
     required WidgetRef ref,
   }) {
     if (isAddressError) {
-      ref.watch(isAddressErrorProvider.notifier).state = false;
+      ref.read(formErrorStateProvider.notifier).state = ref
+          .read(formErrorStateProvider.notifier)
+          .state
+          .copyWith(isAddressError: false);
     }
   }
 
@@ -35,7 +38,9 @@ class InputAddressWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final bool isAddressError = ref.watch(isAddressErrorProvider);
+    final bool isAddressError = ref
+        .watch(formErrorStateProvider)
+        .isAddressError;
 
     return Material(
       elevation: 4,

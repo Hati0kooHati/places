@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:places/core/providers/is_title_error_provider.dart';
+import 'package:places/core/providers/form_error_state.dart';
 
 class InputTitleWidget extends ConsumerWidget {
   final TextEditingController titleController;
@@ -12,13 +12,16 @@ class InputTitleWidget extends ConsumerWidget {
     required WidgetRef ref,
   }) {
     if (isTitleError) {
-      ref.watch(isTitleErrorProvider.notifier).state = false;
+      ref.read(formErrorStateProvider.notifier).state = ref
+          .read(formErrorStateProvider.notifier)
+          .state
+          .copyWith(isTitleError: false);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isTitleError = ref.watch(isTitleErrorProvider);
+    final bool isTitleError = ref.watch(formErrorStateProvider).isTitleError;
 
     return Container(
       decoration: BoxDecoration(

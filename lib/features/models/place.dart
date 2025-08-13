@@ -22,7 +22,11 @@ class Place {
       id: map["id"],
       title: map["title"],
       imagePath: map["imagePath"],
-      locationInfo: map["locationInfo"],
+      locationInfo: LocationInfo(
+        latitude: map["longitude"],
+        longitude: map["longitude"],
+        address: map["address"],
+      ),
     );
   }
 }

@@ -8,7 +8,7 @@ class LocalDatabase {
 
   static sql.Database? _db;
 
-  static FutureOr<sql.Database> get db async {
+  static Future<sql.Database> get db async {
     if (_db != null) {
       return _db!;
     }

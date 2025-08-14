@@ -31,7 +31,7 @@ class PlacesListWidget extends ConsumerWidget {
               return Center(
                 child: Text(
                   "No places found...",
-                  style: TextStyle(color: Theme.of(context).canvasColor),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                 ),
               );
             }

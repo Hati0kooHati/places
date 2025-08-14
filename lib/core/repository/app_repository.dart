@@ -10,13 +10,17 @@ import 'package:places/features/models/location_info.dart';
 import 'package:places/features/models/place.dart';
 
 class AppRepository {
-  final Ref ref;
+  final ImageService _imageService;
+  final LocationService _locationService;
+  final PlacesService _placesService;
 
-  AppRepository(this.ref);
-
-  ImageService get _imageService => ref.watch(imageServiceProvider);
-  LocationService get _locationService => ref.watch(locationServiceProvider);
-  PlacesService get _placesService => ref.watch(placesServiceProvider);
+  AppRepository({
+    required imageService,
+    required locationService,
+    required placesService,
+  }) : _imageService = imageService,
+       _locationService = locationService,
+       _placesService = placesService;
 
   Future<File?> pickImage(ImageSource imageSource) async {
     try {
@@ -82,6 +86,14 @@ class AppRepository {
   }
 }
 
-final appRepositoryProvider = Provider<AppRepository>(
-  (ref) => AppRepository(ref),
-);
+final appRepositoryProvider = Provider<AppRepository>((ref) {
+  final ImageService imageService = ref.watch(imageServiceProvider);
+  final LocationService locationService = ref.watch(locationServiceProvider);
+  final PlacesService placesService = ref.watch(placesServiceProvider);
+
+  return AppRepository(
+    imageService: imageService,
+    locationService: locationService,
+    placesService: placesService,
+  );
+});

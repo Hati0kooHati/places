@@ -5,7 +5,7 @@ App on Flutter to store places.
 ## App Screenshots
 
 <p float="left">
-  <img src="./assets/screenshots/places_screen.png" alt="Main screen" width="200" />
+  <img src="./assets/screenshots/place_screen.png" alt="Main screen" width="200" />
   <img src="./assets/screenshots/add_screen.png" alt="Add screen" width="200" />
   <img src="./assets/screenshots/place_details_screen.png" alt="Place details screen" width="200" />
   <img src="./assets/screenshots/settings_screen.png" alt="Settings screen" width="200" />

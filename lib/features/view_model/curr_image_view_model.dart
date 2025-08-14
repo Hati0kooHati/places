@@ -9,7 +9,7 @@ class CurrImageViewModelNotifier extends AutoDisposeNotifier<File?> {
 
   @override
   build() {
-    _appRepository = ref.watch(appRepositoryProvider);
+    _appRepository = ref.read(appRepositoryProvider);
     return null;
   }
 

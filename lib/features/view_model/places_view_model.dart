@@ -10,7 +10,7 @@ class PlacesViewModelNotifier extends AsyncNotifier<List<Place>> {
 
   @override
   build() async {
-    _appRepository = ref.watch(appRepositoryProvider);
+    _appRepository = ref.read(appRepositoryProvider);
 
     return await _appRepository.loadPlaces();
   }

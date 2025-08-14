@@ -87,9 +87,9 @@ class AppRepository {
 }
 
 final appRepositoryProvider = Provider<AppRepository>((ref) {
-  final ImageService imageService = ref.watch(imageServiceProvider);
-  final LocationService locationService = ref.watch(locationServiceProvider);
-  final PlacesService placesService = ref.watch(placesServiceProvider);
+  final ImageService imageService = ref.read(imageServiceProvider);
+  final LocationService locationService = ref.read(locationServiceProvider);
+  final PlacesService placesService = ref.read(placesServiceProvider);
 
   return AppRepository(
     imageService: imageService,

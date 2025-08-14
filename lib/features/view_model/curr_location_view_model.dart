@@ -7,7 +7,7 @@ class CurrLocationViewModelNotifier extends AutoDisposeNotifier<LocationInfo> {
 
   @override
   build() {
-    _appRepository = ref.watch(appRepositoryProvider);
+    _appRepository = ref.read(appRepositoryProvider);
 
     return LocationInfo(latitude: 0, longitude: 0, address: "");
   }
